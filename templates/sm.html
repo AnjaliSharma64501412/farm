@@ -1,0 +1,509 @@
+{% extends "base.html" %}
+
+{% block title %}Soil Moisture Prediction{% endblock %}
+
+{% block content %}
+<div class="full-page-container">
+    <div class="map-container">
+        <div id="map"></div>
+        <div class="map-controls">
+            <button id="locateButton" title="Find my location">
+                <i class="fas fa-location-arrow"></i>
+            </button>
+        </div>
+    </div>
+    
+    <div class="control-panel">
+        <div class="panel-header">
+            <h3><i class="fas fa-tint"></i> Soil Moisture Prediction</h3>
+            <p class="subtitle">Click on the map or enter coordinates to get soil moisture data</p>
+        </div>
+        
+        <form id="coordinatesForm" class="coordinate-form">
+            <div class="input-group">
+                <div class="input-field">
+                    <label for="latitude"><i class="fas fa-map-marker-alt"></i> Latitude</label>
+                    <input type="number" step="any" id="latitude" placeholder="Enter latitude" required>
+                </div>
+                <div class="input-field">
+                    <label for="longitude"><i class="fas fa-map-marker-alt"></i> Longitude</label>
+                    <input type="number" step="any" id="longitude" placeholder="Enter longitude" required>
+                </div>
+            </div>
+            <button type="submit" class="predict-button">
+                <i class="fas fa-search"></i> Predict Soil Moisture
+            </button>
+        </form>
+        
+        <div class="results-container" id="resultCard">
+            <div class="results-header">
+                <h4><i class="fas fa-chart-line"></i> Prediction Results</h4>
+            </div>
+            <div class="results-content">
+                <div class="moisture-display">
+                    <div class="moisture-value" id="moistureValue">--</div>
+                    <div class="moisture-label">Soil Moisture</div>
+                </div>
+                <div class="moisture-status" id="moistureStatus"></div>
+                <div class="recommendation" id="recommendation"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Leaflet JS for maps -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+
+<style>
+    /* Add to your existing styles */
+    .map-controls {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        z-index: 1000;
+    }
+    
+    #locateButton {
+        background: white;
+        border: none;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        box-shadow: 0 1px 5px rgba(0,0,0,0.4);
+        cursor: pointer;
+        font-size: 18px;
+        color: #28a745;
+    }
+    
+    .dark-mode #locateButton {
+        background: #34495e;
+        color: #2ecc71;
+    }
+    
+    /* [Rest of your existing CSS remains the same] */
+    /* Full page layout */
+    .full-page-container {
+        display: flex;
+        height: calc(100vh - 60px);
+        width: 90%;
+        padding: 0;
+        margin: 0;
+    }
+    
+    .map-container {
+        flex: 2;
+        height: 100%;
+        position: relative;
+    }
+    
+    #map {
+        height: 100%;
+        width: 100%;
+    }
+    
+    .control-panel {
+        flex: 1;
+        padding: 20px;
+        min-width: 350px;
+        overflow-y: auto;
+        background-color: #f8f9fa;
+        border-left: 1px solid #dee2e6;
+    }
+    
+    .dark-mode .control-panel {
+        background-color: #2c3e50;
+        border-left: 1px solid #34495e;
+    }
+    
+    /* Panel styling */
+    .panel-header {
+        margin-bottom: 25px;
+        text-align: center;
+    }
+    
+    .panel-header h3 {
+        color: #28a745;
+        margin-bottom: 5px;
+    }
+    
+    .dark-mode .panel-header h3 {
+        color: #2ecc71;
+    }
+    
+    .subtitle {
+        color: #6c757d;
+        font-size: 0.9rem;
+    }
+    
+    .dark-mode .subtitle {
+        color: #bdc3c7;
+    }
+    
+    /* Form styling */
+    .coordinate-form {
+        margin-bottom: 30px;
+    }
+    
+    .input-group {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 15px;
+    }
+    
+    .input-field {
+        flex: 1;
+    }
+    
+    .input-field label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: 500;
+        color: #495057;
+    }
+    
+    .dark-mode .input-field label {
+        color: #ecf0f1;
+    }
+    
+    .input-field input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ced4da;
+        border-radius: 4px;
+        font-size: 1rem;
+    }
+    
+    .dark-mode .input-field input {
+        background-color: #34495e;
+        border-color: #2c3e50;
+        color: #ecf0f1;
+    }
+    
+    .predict-button {
+        width: 100%;
+        padding: 12px;
+        background-color: #28a745;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+    
+    .predict-button:hover {
+        background-color: #218838;
+        transform: translateY(-2px);
+    }
+    
+    .dark-mode .predict-button {
+        background-color: #2ecc71;
+    }
+    
+    .dark-mode .predict-button:hover {
+        background-color: #27ae60;
+    }
+    
+    /* Results styling */
+    .results-container {
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        padding: 20px;
+        margin-top: 20px;
+    }
+    
+    .dark-mode .results-container {
+        background-color: #34495e;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    }
+    
+    .results-header {
+        border-bottom: 1px solid #dee2e6;
+        padding-bottom: 10px;
+        margin-bottom: 15px;
+    }
+    
+    .dark-mode .results-header {
+        border-bottom-color: #2c3e50;
+    }
+    
+    .results-header h4 {
+        color: #495057;
+        margin: 0;
+    }
+    
+    .dark-mode .results-header h4 {
+        color: #ecf0f1;
+    }
+    
+    .moisture-display {
+        text-align: center;
+        margin: 20px 0;
+    }
+    
+    .moisture-value {
+        font-size: 3rem;
+        font-weight: bold;
+        color: #28a745;
+    }
+    
+    .dark-mode .moisture-value {
+        color: #2ecc71;
+    }
+    
+    .moisture-label {
+        font-size: 1rem;
+        color: #6c757d;
+        margin-top: 5px;
+    }
+    
+    .dark-mode .moisture-label {
+        color: #bdc3c7;
+    }
+    
+    .moisture-status {
+        font-size: 1.2rem;
+        font-weight: 500;
+        text-align: center;
+        margin: 15px 0;
+        padding: 10px;
+        border-radius: 4px;
+        background-color: #e9ecef;
+    }
+    
+    .dark-mode .moisture-status {
+        background-color: #2c3e50;
+    }
+    
+    .recommendation {
+        font-size: 0.95rem;
+        line-height: 1.5;
+        color: #495057;
+        padding: 10px;
+        border-radius: 4px;
+        background-color: #e9ecef;
+    }
+    
+    .dark-mode .recommendation {
+        color: #ecf0f1;
+        background-color: #2c3e50;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 992px) {
+        .full-page-container {
+            flex-direction: column;
+            height: auto;
+        }
+        
+        .map-container {
+            height: 400px;
+        }
+        
+        .control-panel {
+            border-left: none;
+            border-top: 1px solid #dee2e6;
+        }
+        
+        .dark-mode .control-panel {
+            border-top: 1px solid #34495e;
+        }
+    }
+</style>
+
+<script>
+    // Initialize map
+    const map = L.map('map').setView([20.5937, 78.9629], 5);
+    let currentMarker = null;
+    let userLocationMarker = null;
+
+    // Add tile layer
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    // Request location access when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+        requestLocationAccess();
+    });
+
+    // Location button functionality
+    document.getElementById('locateButton').addEventListener('click', requestLocationAccess);
+
+    function requestLocationAccess() {
+        if (!navigator.geolocation) {
+            alert("Geolocation is not supported by your browser");
+            return;
+        }
+
+        const locateButton = document.getElementById('locateButton');
+        locateButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+        locateButton.disabled = true;
+
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                const lat = position.coords.latitude;
+                const lng = position.coords.longitude;
+                
+                // Update form fields
+                document.getElementById('latitude').value = lat.toFixed(6);
+                document.getElementById('longitude').value = lng.toFixed(6);
+                
+                // Center map on user's location
+                map.setView([lat, lng], 12);
+                
+                // Remove previous markers
+                if (currentMarker) map.removeLayer(currentMarker);
+                if (userLocationMarker) map.removeLayer(userLocationMarker);
+                
+                // Add blue dot for user location
+                userLocationMarker = L.circleMarker([lat, lng], {
+                    radius: 8,
+                    fillColor: "#3388ff",
+                    color: "#fff",
+                    weight: 2,
+                    opacity: 1,
+                    fillOpacity: 0.8
+                }).addTo(map).bindPopup("Your current location");
+                
+                // Get prediction for this location
+                getSoilMoisture(lat, lng);
+                
+                locateButton.innerHTML = '<i class="fas fa-location-arrow"></i>';
+                locateButton.disabled = false;
+            },
+            (error) => {
+                let errorMessage;
+                switch(error.code) {
+                    case error.PERMISSION_DENIED:
+                        errorMessage = "Location access was denied. Please enable location services in your browser settings.";
+                        break;
+                    case error.POSITION_UNAVAILABLE:
+                        errorMessage = "Location information is unavailable.";
+                        break;
+                    case error.TIMEOUT:
+                        errorMessage = "The request to get user location timed out.";
+                        break;
+                    case error.UNKNOWN_ERROR:
+                        errorMessage = "An unknown error occurred.";
+                        break;
+                }
+                alert(errorMessage);
+                locateButton.innerHTML = '<i class="fas fa-location-arrow"></i>';
+                locateButton.disabled = false;
+            },
+            {
+                enableHighAccuracy: true,
+                timeout: 10000,
+                maximumAge: 0
+            }
+        );
+    }
+
+    // Click event handler for the map
+    map.on('click', function(e) {
+        const lat = e.latlng.lat;
+        const lng = e.latlng.lng;
+        
+        // Update form fields
+        document.getElementById('latitude').value = lat.toFixed(6);
+        document.getElementById('longitude').value = lng.toFixed(6);
+        
+        // Remove previous markers except user location
+        if (currentMarker) {
+            map.removeLayer(currentMarker);
+        }
+        
+        // Add new marker
+        currentMarker = L.marker([lat, lng]).addTo(map)
+            .bindPopup(`Selected location<br>Lat: ${lat.toFixed(6)}<br>Lng: ${lng.toFixed(6)}`)
+            .openPopup();
+        
+        // Get prediction for clicked location
+        getSoilMoisture(lat, lng);
+    });
+
+    // Form submission handler
+    document.getElementById('coordinatesForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const lat = parseFloat(document.getElementById('latitude').value);
+        const lng = parseFloat(document.getElementById('longitude').value);
+        
+        // Validate coordinates
+        if (isNaN(lat) || isNaN(lng)) {
+            alert('Please enter valid coordinates');
+            return;
+        }
+        
+        // Center map on the entered coordinates
+        map.setView([lat, lng], 12);
+        
+        // Remove previous markers except user location
+        if (currentMarker) {
+            map.removeLayer(currentMarker);
+        }
+        
+        // Add new marker
+        currentMarker = L.marker([lat, lng]).addTo(map)
+            .bindPopup(`Selected location<br>Lat: ${lat.toFixed(6)}<br>Lng: ${lng.toFixed(6)}`)
+            .openPopup();
+        
+        // Get soil moisture prediction
+        getSoilMoisture(lat, lng);
+    });
+
+    // Function to get soil moisture prediction
+    function getSoilMoisture(lat, lng) {
+        fetch(`/get_soil_moisture?lat=${lat}&lon=${lng}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    alert(data.error);
+                    return;
+                }
+                
+                // Convert decimal to percentage (0.94 becomes 94)
+                const moistureValue = data.soil_moisture * 100;
+                const moisture = moistureValue.toFixed(2); // Keep 2 decimal places
+                document.getElementById('moistureValue').textContent = `${moisture}%`;
+                
+                let status = '';
+                let recommendation = '';
+                let statusClass = '';
+                
+                // Update these thresholds to work with percentage values (0-100)
+                if (moistureValue < 30) {
+                    status = 'Very Dry - Needs irrigation';
+                    recommendation = 'Immediate watering required. Consider drip irrigation for water conservation.';
+                    statusClass = 'very-dry';
+                } else if (moistureValue < 50) {
+                    status = 'Dry - Could use water';
+                    recommendation = 'Moderate watering recommended. Monitor soil regularly.';
+                    statusClass = 'dry';
+                } else if (moistureValue < 70) {
+                    status = 'Ideal Moisture Level';
+                    recommendation = 'Maintain current watering schedule. Soil conditions are optimal.';
+                    statusClass = 'ideal';
+                } else {
+                    status = 'Wet - Reduce watering';
+                    recommendation = 'Reduce irrigation to prevent waterlogging and root rot.';
+                    statusClass = 'wet';
+                }
+                
+                const statusElement = document.getElementById('moistureStatus');
+                statusElement.textContent = status;
+                statusElement.className = `moisture-status ${statusClass}`;
+                
+                document.getElementById('recommendation').textContent = recommendation;
+                document.getElementById('resultCard').style.display = 'block';
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while fetching soil moisture data');
+            });
+    }
+</script>
+{% endblock %}

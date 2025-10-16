@@ -1,0 +1,423 @@
+{% extends "base.html" %}
+
+{% block title %}About AgriTech{% endblock %}
+
+{% block content %}
+<div class="modern-about">
+    <!-- Hero Section -->
+    <section class="about-hero">
+        <div class="hero-content">
+            <h1>Revolutionizing Agriculture with AI</h1>
+            <p class="hero-text">We're transforming traditional farming through cutting-edge technology and data-driven insights</p>
+            <div class="hero-stats">
+                <div class="stat-card">
+                    <div class="stat-number">10,000+</div>
+                    <div class="stat-label">Farmers Helped</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">95%</div>
+                    <div class="stat-label">Detection Accuracy</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">24/7</div>
+                    <div class="stat-label">AI Support</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Value Proposition -->
+    <section class="value-props">
+        <h2 class="section-title">Why Choose AgriTech?</h2>
+        <div class="props-grid">
+            <div class="prop-card">
+                <div class="prop-icon"><i class="fas fa-bolt"></i></div>
+                <h3>Instant Analysis</h3>
+                <p>Get real-time disease detection and soil analysis without waiting for lab results</p>
+            </div>
+            <div class="prop-card">
+                <div class="prop-icon"><i class="fas fa-mobile-alt"></i></div>
+                <h3>Mobile Friendly</h3>
+                <p>Access all features from your smartphone, right in the field</p>
+            </div>
+            <div class="prop-card">
+                <div class="prop-icon"><i class="fas fa-chart-line"></i></div>
+                <h3>Data-Driven</h3>
+                <p>Make decisions based on scientific analysis, not guesswork</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technology Stack -->
+    <section class="tech-stack">
+        <div class="tech-content">
+            <h2 class="section-title">Our Technology</h2>
+            <p>AgriTech combines multiple advanced technologies to deliver accurate results:</p>
+            <ul class="tech-list">
+                <li><i class="fas fa-check-circle"></i> Deep Learning for image recognition</li>
+                <li><i class="fas fa-check-circle"></i> Computer Vision for disease detection</li>
+                <li><i class="fas fa-check-circle"></i> Predictive Analytics for yield forecasting</li>
+                <li><i class="fas fa-check-circle"></i> IoT Integration for soil monitoring</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section class="team-section">
+        <h2 class="section-title">The Founders</h2>
+        <div class="team-grid">
+            <div class="team-card">
+                <div class="member-icon"><i class="fas fa-user"></i></div>
+                <h3>Anjali</h3>
+                <p class="role">Founder & Lead Developer</p>
+                <p class="bio">AI/ML specialist with a passion for agricultural technology</p>
+            </div>
+            <div class="team-card">
+                <div class="member-icon"><i class="fas fa-user"></i></div>
+                <h3>Adith Kumar</h3>
+                <p class="role">Founder & Lead Developer</p>
+                <p class="bio">Full-stack developer specializing in scalable farm solutions</p>
+            </div>
+            <div class="team-card">
+                <div class="member-icon"><i class="fas fa-user"></i></div>
+                <h3>Pranitha</h3>
+                <p class="role">Founder & Lead Developer</p>
+                <p class="bio">Data scientist focused on predictive agricultural models</p>
+            </div>
+            <div class="team-card">
+                <div class="member-icon"><i class="fas fa-robot"></i></div>
+                <h3>AgriBot</h3>
+                <p class="role">AI Assistant</p>
+                <p class="bio">24/7 farming assistant powered by machine learning</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <h2>Ready to Transform Your Farming?</h2>
+        <a href="/disease" class="cta-button">Try Disease Detection Now</a>
+    </section>
+</div>
+
+<style>
+    body {
+        margin-top: 100px;
+    }
+    .modern-about {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+        color: inherit;
+    }
+
+    /* Hero Section */
+    .about-hero {
+        text-align: center;
+        margin-bottom: 60px;
+        padding: 40px 20px;
+    }
+
+    .about-hero h1 {
+        font-size: 2.8rem;
+        color: #2e8b57;
+        margin-bottom: 20px;
+        line-height: 1.2;
+    }
+
+    .hero-text {
+        font-size: 1.3rem;
+        color: #555;
+        margin-bottom: 30px;
+        line-height: 1.6;
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .dark-mode .hero-text {
+        color: #ccc;
+    }
+
+    .hero-stats {
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+        margin-top: 40px;
+        flex-wrap: wrap;
+    }
+
+    .stat-card {
+        background: rgba(46, 139, 87, 0.1);
+        padding: 25px;
+        border-radius: 10px;
+        text-align: center;
+        min-width: 150px;
+    }
+
+    .dark-mode .stat-card {
+        background: rgba(46, 139, 87, 0.2);
+    }
+
+    .stat-number {
+        font-size: 2.2rem;
+        font-weight: bold;
+        color: #2e8b57;
+        margin-bottom: 5px;
+    }
+
+    .stat-label {
+        font-size: 1rem;
+        color: #666;
+    }
+
+    .dark-mode .stat-label {
+        color: #aaa;
+    }
+
+    /* Value Propositions */
+    .value-props {
+        margin: 80px 0;
+    }
+
+    .section-title {
+        text-align: center;
+        font-size: 2.2rem;
+        color: #2e8b57;
+        margin-bottom: 50px;
+        position: relative;
+    }
+
+    .section-title:after {
+        content: "";
+        display: block;
+        width: 80px;
+        height: 3px;
+        background: #2e8b57;
+        margin: 15px auto 0;
+    }
+
+    .props-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 30px;
+        margin-top: 40px;
+    }
+
+    .prop-card {
+        background: rgba(255, 255, 255, 0.8);
+        padding: 30px;
+        border-radius: 15px;
+        text-align: center;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(5px);
+        border: 1px solid rgba(0,0,0,0.1);
+    }
+
+    .dark-mode .prop-card {
+        background: rgba(0, 0, 0, 0.2);
+        border-color: rgba(255,255,255,0.1);
+    }
+
+    .prop-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+    }
+
+    .prop-icon {
+        font-size: 2.5rem;
+        color: #2e8b57;
+        margin-bottom: 20px;
+    }
+
+    .prop-card h3 {
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+    }
+
+    .prop-card p {
+        color: #666;
+        line-height: 1.6;
+    }
+
+    .dark-mode .prop-card p {
+        color: #ccc;
+    }
+
+    /* Technology Stack */
+    .tech-stack {
+        text-align: center;
+        margin: 80px 0;
+    }
+
+    .tech-stack p {
+        font-size: 1.1rem;
+        line-height: 1.6;
+        margin-bottom: 30px;
+        color: #555;
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .dark-mode .tech-stack p {
+        color: #ccc;
+    }
+
+    .tech-list {
+        list-style: none;
+        padding: 0;
+        display: inline-block;
+        text-align: left;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .tech-list li {
+        margin-bottom: 15px;
+        font-size: 1.1rem;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .tech-list i {
+        color: #2e8b57;
+    }
+
+    /* Team Section */
+    .team-section {
+        margin: 80px 0;
+    }
+
+    .team-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 30px;
+        margin-top: 50px;
+    }
+
+    .team-card {
+        background: rgba(255, 255, 255, 0.8);
+        border-radius: 15px;
+        padding: 30px;
+        text-align: center;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(5px);
+        border: 1px solid rgba(0,0,0,0.1);
+    }
+
+    .dark-mode .team-card {
+        background: rgba(0, 0, 0, 0.2);
+        border-color: rgba(255,255,255,0.1);
+    }
+
+    .team-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+    }
+
+    .member-icon {
+        width: 80px;
+        height: 80px;
+        background-color: #2e8b57;
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+        font-size: 2rem;
+    }
+
+    .team-card h3 {
+        font-size: 1.5rem;
+        margin-bottom: 5px;
+        color: #2e8b57;
+    }
+
+    .role {
+        font-weight: bold;
+        margin-bottom: 15px;
+        color: #666;
+    }
+
+    .dark-mode .role {
+        color: #aaa;
+    }
+
+    .bio {
+        color: #555;
+        line-height: 1.6;
+        font-size: 0.95rem;
+    }
+
+    .dark-mode .bio {
+        color: #ccc;
+    }
+
+    /* CTA Section */
+    .cta-section {
+        text-align: center;
+        padding: 60px 20px;
+        background: linear-gradient(135deg, rgba(46, 139, 87, 0.1), rgba(46, 139, 87, 0.2));
+        border-radius: 15px;
+        margin: 80px 0;
+    }
+
+    .dark-mode .cta-section {
+        background: linear-gradient(135deg, rgba(46, 139, 87, 0.2), rgba(46, 139, 87, 0.3));
+    }
+
+    .cta-section h2 {
+        font-size: 2rem;
+        margin-bottom: 30px;
+        color: #2e8b57;
+    }
+
+    .cta-button {
+        display: inline-block;
+        padding: 15px 40px;
+        background-color: #2e8b57;
+        color: white;
+        text-decoration: none;
+        border-radius: 50px;
+        font-size: 1.2rem;
+        transition: all 0.3s ease;
+        font-weight: bold;
+    }
+
+    .cta-button:hover {
+        background-color: #3aa76d;
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(46, 139, 87, 0.3);
+    }
+
+    @media (max-width: 768px) {
+        .about-hero h1 {
+            font-size: 2.2rem;
+        }
+        
+        .hero-text {
+            font-size: 1.1rem;
+        }
+        
+        .section-title {
+            font-size: 1.8rem;
+        }
+        
+        .cta-section h2 {
+            font-size: 1.6rem;
+        }
+        
+        .stat-card {
+            min-width: 120px;
+            padding: 15px;
+        }
+        
+        .stat-number {
+            font-size: 1.8rem;
+        }
+    }
+</style>
+{% endblock %}

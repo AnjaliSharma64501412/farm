@@ -1,0 +1,361 @@
+{% extends "base.html" %}
+
+{% block title %}AgriTech Chatbot{% endblock %}
+
+{% block content %}
+<div class="chatbot-container">
+    <div class="chat-header">
+        <div class="header-content">
+            <div class="bot-avatar">
+                <i class="fas fa-robot"></i>
+            </div>
+            <div class="header-text">
+                <h1>AgriBot Assistant</h1>
+                <p class="status">Online</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="chat-window" id="chatWindow">
+        <div class="message bot-message">
+            <div class="message-content">
+                <p>Hello! I'm AgriBot, your farming assistant. How can I help you today?</p>
+                <div class="quick-suggestions">
+                    <div class="suggestion">Plant disease ID</div>
+                    <div class="suggestion">Soil advice</div>
+                    <div class="suggestion">Pest control</div>
+                    <div class="suggestion">Crop rotation</div>
+                </div>
+            </div>
+            <div class="message-time">2:45 PM</div>
+        </div>
+    </div>
+
+    <div class="input-container">
+        <div class="input-box">
+            <input type="text" id="userInput" placeholder="Type your question...">
+            <button id="sendButton">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Main Container */
+    .chatbot-container {
+        max-width: 100%;
+        width: 700px;
+        height: 550px;
+        margin: 0 auto;
+        background: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        font-family: 'Segoe UI', Arial, sans-serif;
+    }
+
+    .dark-mode .chatbot-container {
+        background: #2d3748;
+    }
+
+    /* Header */
+    .chat-header {
+        padding: 20px;
+        background: #f8f9fa;
+        border-bottom: 1px solid #e9ecef;
+    }
+
+    .dark-mode .chat-header {
+        background: #1a202c;
+        border-color: #2d3748;
+    }
+
+    .header-content {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .bot-avatar {
+        width: 50px;
+        height: 50px;
+        background: #2e8b57;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 22px;
+    }
+
+    .header-text h1 {
+        margin: 0;
+        font-size: 18px;
+        font-weight: 600;
+        color: #2d3748;
+    }
+
+    .dark-mode .header-text h1 {
+        color: #f7fafc;
+    }
+
+    .status {
+        margin: 3px 0 0;
+        font-size: 13px;
+        color: #4a5568;
+    }
+
+    .dark-mode .status {
+        color: #a0aec0;
+    }
+
+    /* Chat Window */
+    .chat-window {
+        flex: 1;
+        padding: 20px;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        background: #ffffff;
+    }
+
+    .dark-mode .chat-window {
+        background: #2d3748;
+    }
+
+    /* Messages */
+    .message {
+        max-width: 80%;
+        display: flex;
+        flex-direction: column;
+        animation: fadeIn 0.3s ease-out;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .bot-message {
+        align-self: flex-start;
+    }
+
+    .user-message {
+        align-self: flex-end;
+    }
+
+    .message-content {
+        padding: 12px 16px;
+        border-radius: 18px;
+        line-height: 1.5;
+        font-size: 15px;
+    }
+
+    .bot-message .message-content {
+        background: #f1f5f9;
+        border-top-left-radius: 4px;
+        color: #1a202c;
+    }
+
+    .dark-mode .bot-message .message-content {
+        background: #4a5568;
+        color: #f7fafc;
+    }
+
+    .user-message .message-content {
+        background: #2e8b57;
+        color: white;
+        border-top-right-radius: 4px;
+    }
+
+    .message-time {
+        font-size: 11px;
+        color: #718096;
+        margin-top: 4px;
+        align-self: flex-end;
+    }
+
+    .dark-mode .message-time {
+        color: #a0aec0;
+    }
+
+    /* Quick Suggestions */
+    .quick-suggestions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 10px;
+    }
+
+    .suggestion {
+        background: rgba(46, 139, 87, 0.1);
+        color: #2e8b57;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 13px;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .dark-mode .suggestion {
+        background: rgba(46, 139, 87, 0.2);
+    }
+
+    .suggestion:hover {
+        background: rgba(46, 139, 87, 0.2);
+    }
+
+    /* Input Area */
+    .input-container {
+        padding: 15px 20px;
+        background: #f8f9fa;
+        border-top: 1px solid #e9ecef;
+    }
+
+    .dark-mode .input-container {
+        background: #1a202c;
+        border-color: #2d3748;
+    }
+
+    .input-box {
+        display: flex;
+        background: #ffffff;
+        border-radius: 24px;
+        padding: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    .dark-mode .input-box {
+        background: #4a5568;
+    }
+
+    #userInput {
+        flex: 1;
+        border: none;
+        padding: 8px 12px;
+        font-size: 15px;
+        outline: none;
+        background: transparent;
+    }
+
+    .dark-mode #userInput {
+        color: #f7fafc;
+    }
+
+    #sendButton {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: #2e8b57;
+        color: white;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s;
+    }
+
+    #sendButton:hover {
+        background: #3aa76d;
+        transform: scale(1.05);
+    }
+
+    /* Scrollbar */
+    .chat-window::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .chat-window::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    .chat-window::-webkit-scrollbar-thumb {
+        background: #cbd5e0;
+        border-radius: 3px;
+    }
+
+    .dark-mode .chat-window::-webkit-scrollbar-thumb {
+        background: #4a5568;
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const chatWindow = document.getElementById('chatWindow');
+        const userInput = document.getElementById('userInput');
+        const sendButton = document.getElementById('sendButton');
+        const suggestions = document.querySelectorAll('.suggestion');
+
+        // Add message to chat
+        function addMessage(sender, text) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}-message`;
+            
+            messageDiv.innerHTML = `
+                <div class="message-content">
+                    <p>${text}</p>
+                </div>
+                <div class="message-time">${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div>
+            `;
+            
+            chatWindow.appendChild(messageDiv);
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+        }
+
+        // Bot response logic
+        function getBotResponse(userMessage) {
+            const responses = {
+                "hi": "Hello! How can I assist with your farming questions today?",
+                "hello": "Hi there! What would you like to know about farming?",
+                "disease": "For disease identification, please describe or upload an image of the affected plant.",
+                "soil": "Soil health is crucial. What specific soil issue are you facing?",
+                "pest": "For pest control, I recommend organic methods first. What pest are you dealing with?",
+                "default": "I'm happy to help with farming questions. Could you provide more details?"
+            };
+
+            const lowerMsg = userMessage.toLowerCase();
+            for (const [key, response] of Object.entries(responses)) {
+                if (lowerMsg.includes(key)) {
+                    return response;
+                }
+            }
+            return responses["default"];
+        }
+
+        // Send message
+        function sendMessage() {
+            const message = userInput.value.trim();
+            if (message) {
+                addMessage('user', message);
+                userInput.value = '';
+                
+                setTimeout(() => {
+                    const botResponse = getBotResponse(message);
+                    addMessage('bot', botResponse);
+                }, 800);
+            }
+        }
+
+        // Event listeners
+        sendButton.addEventListener('click', sendMessage);
+        
+        userInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        suggestions.forEach(suggestion => {
+            suggestion.addEventListener('click', function() {
+                userInput.value = this.textContent;
+                userInput.focus();
+            });
+        });
+    });
+</script>
+{% endblock %}

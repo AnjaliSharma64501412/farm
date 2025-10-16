@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}{% endblock %}</title>
+    <!-- Add Font Awesome CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #E6EDF5;
+            margin: 0;
+            transition: background-color 0.3s, color 0.3s; /* Smooth transition */
+        }
+
+        .dark-mode {
+            background-color: #333333;
+            color: white;
+        }
+
+        /* Hamburger Menu Icon */
+        #hamburgerMenu {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 1000;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            transition: transform 0.3s ease;
+        }
+
+        #hamburgerMenu span {
+            width: 100%;
+            height: 3px;
+            background-color: #333; /* Default color */
+            border-radius: 2px;
+            transition: transform 0.3s ease, opacity 0.3s ease, background-color 0.3s ease;
+        }
+
+        /* Dark mode styles for hamburger menu */
+        .dark-mode #hamburgerMenu span {
+            background-color: white; /* White in dark mode */
+        }
+
+        /* Active state styles for hamburger menu */
+        #hamburgerMenu.active span {
+            background-color: white; /* White when active (clicked) */
+        }
+
+        #hamburgerMenu.active span:nth-child(1) {
+            transform: translateY(8px) rotate(45deg);
+        }
+
+        #hamburgerMenu.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        #hamburgerMenu.active span:nth-child(3) {
+            transform: translateY(-8px) rotate(-45deg);
+        }
+
+        /* Navigation Bar */
+        nav {
+            position: fixed;
+            left: -250px; /* Hide by default (increased width) */
+            top: 0;
+            width: 250px; /* Increased width */
+            height: 100vh;
+            background: #333;
+            color: white;
+            padding-top: 60px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start; /* Align links to the left */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            transition: left 0.3s ease, background-color 0.3s ease; /* Smooth slide transition */
+            z-index: 999;
+        }
+
+        nav.active {
+            left: 0; /* Show navigation */
+        }
+
+        nav a {
+            color: white;
+            margin: 15px 20px; /* Increased margin for better spacing */
+            text-decoration: none;
+            font-size: 20px; /* Increased font size */
+            display: flex;
+            align-items: center; /* Align icon and text vertically */
+            padding: 10px 15px; /* Increased padding */
+            border-radius: 5px;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+        }
+
+        nav a:hover {
+            background-color: #555;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            transform: translateX(10px); /* Move link to the right on hover */
+        }
+
+        nav a i {
+            margin-right: 10px; /* Space between icon and text */
+            font-size: 24px; /* Icon size */
+            transition: transform 0.3s ease, color 0.3s ease; /* Smooth icon transitions */
+        }
+
+        nav a:hover i {
+            transform: scale(1.2); /* Scale up icon on hover */
+            color: #FFD700; /* Change icon color on hover */
+        }
+
+        /* Dark Mode Toggle in Navigation Bar */
+        #darkModeToggle {
+            background-color: #333;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 80px;
+            cursor: pointer;
+            position: absolute;
+            top: 10px; /* Position at the bottom */
+            right: 0%; /* Center horizontally */
+            transform: translateX(-50%); /* Center horizontally */
+            transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease; /* Smooth transitions */
+            font-size: 16px; /* Consistent font size */
+            width: 50px;
+            height: 50px;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            outline: none;
+        }
+
+        #darkModeToggle:hover {
+            background-color: #666;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            transform: translateX(-50%) scale(1.1); /* Slightly scale up on hover */
+        }
+
+        .dark-mode #darkModeToggle {
+            background-color: #666;
+            color: white;
+        }
+
+        .content {
+            margin-left: 0; /* No margin for content when nav is hidden */
+            padding: 20px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Hamburger Menu Icon -->
+    <div id="hamburgerMenu">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+
+    <!-- Navigation Bar -->
+    <nav id="navBar">
+        <a href="/">
+            <i class="fas fa-home"></i> <!-- Home Icon -->
+            Home
+        </a>
+        <a href="/about">
+            <i class="fas fa-info-circle"></i> <!-- About Icon -->
+            About
+        </a>
+        <a href="/chatbot">
+            <i class="fas fa-robot"></i> <!-- Chatbot Icon -->
+            Chatbot
+        </a>
+        <a href="/disease">
+            <i class="fas fa-leaf"></i> <!-- Plant Disease Icon -->
+            Plant Disease Detection
+        </a>
+        <a href="/soil-moisture">
+            <i class="fas fa-tint"></i> <!-- Water drop icon for Soil Moisture -->
+            Soil Moisture
+        </a>
+        <a href="/crop-yield">
+            <i class="fas fa-chart-bar"></i> <!-- Chart icon for Crop Yield -->
+            Crop Yield Prediction
+        </a>
+    </nav>
+    <button id="darkModeToggle">🌙</button>
+
+    <!-- Content Area -->
+    <div class="content">
+        {% block content %}{% endblock %}
+    </div>
+
+    <script>
+        // Toggle Navigation Bar
+        const hamburgerMenu = document.getElementById("hamburgerMenu");
+        const navBar = document.getElementById("navBar");
+
+        hamburgerMenu.addEventListener("click", () => {
+            navBar.classList.toggle("active");
+            hamburgerMenu.classList.toggle("active"); // Toggle active class for animation
+        });
+
+        // Close Navigation Bar when clicking outside
+        document.addEventListener("click", (event) => {
+            if (!navBar.contains(event.target) && !hamburgerMenu.contains(event.target)) {
+                navBar.classList.remove("active");
+                hamburgerMenu.classList.remove("active"); // Remove active class for animation
+            }
+        });
+
+        // Function to apply dark mode
+        function applyDarkMode(isDarkMode) {
+            if (isDarkMode) {
+                document.body.classList.add('dark-mode');
+                document.getElementById('darkModeToggle').textContent = '☀️';
+            } else {
+                document.body.classList.remove('dark-mode');
+                document.getElementById('darkModeToggle').textContent = '🌙';
+            }
+        }
+
+        // Check for saved dark mode state in localStorage
+        let isDarkMode = localStorage.getItem('darkMode') === 'true';
+        applyDarkMode(isDarkMode); // Apply dark mode on page load
+
+        // Toggle dark mode
+        document.getElementById('darkModeToggle').addEventListener('click', () => {
+            isDarkMode = !isDarkMode;
+            localStorage.setItem('darkMode', isDarkMode); // Save state to localStorage
+            applyDarkMode(isDarkMode); // Apply dark mode
+        });
+    </script>
+</body>
+</html>

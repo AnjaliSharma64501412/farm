@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+
+{% block title %}AgriTech Home{% endblock %}
+
+{% block content %}
+<div class="simple-home">
+    <div class="welcome-section">
+        <h1>AgriTech Solutions</h1>
+        <p class="tagline">Smart farming tools for better crop management</p>
+        
+        <div class="main-cta">
+            <a href="/disease" class="main-button">
+                <i class="fas fa-leaf"></i> Detect Plant Diseases
+            </a>
+        </div>
+    </div>
+
+    <div class="quick-links">
+        <h2>Quick Access</h2>
+        <div class="link-cards">
+            <a href="/soil-moisture" class="link-card">
+                <i class="fas fa-tint"></i>
+                <span>Soil Moisture</span>
+            </a>
+            <a href="/crop-yield" class="link-card">
+                <i class="fas fa-chart-bar"></i>
+                <span>Crop Yield</span>
+            </a>
+            <a href="/chatbot" class="link-card">
+                <i class="fas fa-robot"></i>
+                <span>AI Assistant</span>
+            </a>
+        </div>
+    </div>
+</div>
+
+<style>
+    .simple-home {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        text-align: center;
+    }
+
+    .welcome-section {
+        margin-bottom: 40px;
+        padding: 30px 0;
+    }
+
+    .welcome-section h1 {
+        font-size: 2.5rem;
+        color: #2e8b57;
+        margin-bottom: 10px;
+    }
+
+    .tagline {
+        font-size: 1.2rem;
+        color: #666;
+        margin-bottom: 30px;
+    }
+
+    .dark-mode .tagline {
+        color: #ccc;
+    }
+
+    .main-cta {
+        margin-top: 30px;
+    }
+
+    .main-button {
+        display: inline-block;
+        padding: 12px 25px;
+        background-color: #2e8b57;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        font-size: 1.1rem;
+        transition: all 0.3s ease;
+    }
+
+    .main-button:hover {
+        background-color: #3aa76d;
+        transform: translateY(-2px);
+    }
+
+    .main-button i {
+        margin-right: 10px;
+    }
+
+    .quick-links {
+        margin-top: 50px;
+    }
+
+    .quick-links h2 {
+        font-size: 1.8rem;
+        color: #2e8b57;
+        margin-bottom: 20px;
+    }
+
+    .link-cards {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        flex-wrap: wrap;
+    }
+
+    .link-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 150px;
+        height: 150px;
+        background-color: #f8f9fa;
+        border-radius: 10px;
+        text-decoration: none;
+        color: #333;
+        transition: all 0.3s ease;
+        border: 1px solid #ddd;
+    }
+
+    .dark-mode .link-card {
+        background-color: #444;
+        color: white;
+        border-color: #555;
+    }
+
+    .link-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .link-card i {
+        font-size: 2rem;
+        margin-bottom: 15px;
+        color: #2e8b57;
+    }
+
+    .link-card span {
+        font-size: 1.1rem;
+    }
+</style>
+{% endblock %}
